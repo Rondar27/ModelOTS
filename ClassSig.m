@@ -11,7 +11,8 @@ classdef ClassSig < handle
         beta;
         span;
         sps; %Выборки на символ
-        
+        k;
+        sps_k;
     end
     methods
         function obj = ClassSig(Params, LogLanguage) % Конструктор
@@ -20,6 +21,8 @@ classdef ClassSig < handle
                 obj.beta = Sig.beta;
                 obj.span = Sig.span;
                 obj.sps = Sig.sps;
+                obj.k=Sig.k;
+                obj.sps_k=round(obj.k*obj.sps);
             % Инициализация значений переменных из параметров
                 obj.isTransparent = Sig.isTransparent;
             % Переменная LogLanguage
@@ -34,8 +37,10 @@ classdef ClassSig < handle
                 return
             end
             
+            
             % Здесь должна быть процедура формирования сигнала
-            OutData = upfirdn(InData, obj.b, obj.sps);
+            %ДПВБЧЙФШ  k*sps
+            OutData = upfirdn(InData, obj.b, obj.sps_k);
         end
         function OutData = StepRx(obj, InData)
             if obj.isTransparent
@@ -46,7 +51,8 @@ classdef ClassSig < handle
             % Здесь должна быть процедура, обратная поцедуре формирования
             % сигнала
             CF = conv(InData, obj.b); %согласованная фильтрация
-            OutData = CF(obj.span*obj.sps + 1:obj.sps:end-obj.span*obj.sps);
+            %ДПВБЧЙФШ  k*sps
+            OutData = CF(obj.span*obj.sps + 1:obj.sps_k:end-obj.span*obj.sps_k);
         end
     end
 end

@@ -19,7 +19,7 @@ function Main(FirstParamsNum, Step4ParamsNum, LogLanguage)
 
     % Очистка command window, закрытие всего
         clc;
-        close all;
+%         close all;
 
     % Проверим количество входных переменных
         if ~(nargin >= 0 && nargin <= 3)
